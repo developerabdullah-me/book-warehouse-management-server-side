@@ -19,17 +19,17 @@ try{
     await client.connect();
     const ServiceCollection=client.db('warehouse').collection('service')
 
-    app.get('/services',async (req, res) => {
+    app.get('/InventoryItems',async (req, res) => {
         const query={}
     const cursor=ServiceCollection.find(query)
-    const services=await cursor.toArray()
-    res.send(services)
+    const InventoryItems=await cursor.toArray()
+    res.send(InventoryItems)
     })
 
-    app.post('/services', async(req, res) => {
+    app.post('/InventoryItems', async(req, res) => {
       
-        const query=req.body;
-        const service = await ServiceCollection.insertOne(query).toArray()
+        const newService=req.body;
+        const service = await ServiceCollection.insertOne(newService)
         res.send(service)
     })
 }
