@@ -25,13 +25,28 @@ try{
     const InventoryItems=await cursor.toArray()
     res.send(InventoryItems)
     })
-
+// post
     app.post('/InventoryItems', async(req, res) => {
-      
         const newService=req.body;
         const service = await ServiceCollection.insertOne(newService)
         res.send(service)
     })
+
+    app.get('/InventoryItems/:id', async (req, res) => {
+        const id = req.params.id
+        const query = { _id: ObjectId(id) }
+        const result = await ServiceCollection.deleteOne(query)
+        res.send(result)
+    })
+
+
+    app.delete('/InventoryItems/:id', async (req, res) => {
+        const id = req.params.id
+        const query = { _id: ObjectId(id) }
+        const result = await ServiceCollection.deleteOne(query)
+        res.send(result)
+    })
+
 }
 finally{
 
