@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const ObjectId = require('mongodb').ObjectId
+const { MongoClient, ServerApiVersion} = require("mongodb");
 const port = process.env.PORT || 5000;
 
 // middellware
@@ -30,7 +31,6 @@ async function run() {
     // get myAddedItems data  from database
     app.get("/myAddedItems", async (req, res) => {
       const email=req.query.email;
-      console.log(email);
       const query = {email: email};
       const cursor = ServiceCollection.find(query);
       const InventoryItems = await cursor.toArray();
@@ -42,6 +42,17 @@ async function run() {
       const service = await ServiceCollection.insertOne(newService);
       res.send(service);
     });
+
+// id
+    app.get('/InventoryItems/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = {_id: ObjectId(id)};
+      console.log(query);
+      const result = await ServiceCollection.findOne(query)
+      console.log(result)
+      res.send(result);
+  });
     // post
     app.post("/InventoryItems", async (req, res) => {
       const newService = req.body;
@@ -51,7 +62,7 @@ async function run() {
 
     app.get("/InventoryItems/:id", async (req, res) => {
       const id = req.params.id;
-      const query = { _id: ObjectId(id) };
+      const query = { _id:id };
       const result = await ServiceCollection.deleteOne(query);
       res.send(result);
     });
