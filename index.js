@@ -102,6 +102,20 @@ async function run() {
       const result = await ServiceCollection.deleteOne(query);
       res.send(result);
     });
+// put for updatedQuantity and restack
+    app.put('/InventoryItems/:id', async (req, res) => {
+      const id = req.params.id
+      const updatedQuantity = req.body.updatedData
+      const filter = { _id: id }
+      const options = { upsert: true }
+      const updatedDoc = {
+          $set: {
+              quantity: updatedQuantity
+          }
+      }
+      const result = await ServiceCollection.updateOne(filter, updatedDoc, options)
+      res.send(result)
+  })
   } finally {
   }
 }
